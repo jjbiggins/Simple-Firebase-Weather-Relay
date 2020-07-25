@@ -32,3 +32,5 @@ var sense = require("sense‐hat‐led");
 
   firebase.initializeApp(firebaseConfig);
 
+var database = firebase.database();
+
