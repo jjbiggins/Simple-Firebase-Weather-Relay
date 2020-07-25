@@ -1,0 +1,24 @@
+{
+  "name": "simple-firebase-data-relay",
+  "version": "1.0.0",
+  "description": "File              : README.md  Author            : Joe Biggins <jjbiggins@joebiggins.io>  Date              : 24.07.2020  Last Modified Date: 24.07.2020  Last Modified By  : Joe Biggins <jjbiggins@joebiggins.io>",
+  "main": "app.js",
+  "dependencies": {
+    "firebase": "^7.17.1",
+    "nodeimu": "^2.1.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjbiggins/Simple-Firebase-Weather-Relay.git"
+  },
+  "author": "Joe Biggins",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jjbiggins/Simple-Firebase-Weather-Relay/issues"
+  },
+  "homepage": "https://github.com/jjbiggins/Simple-Firebase-Weather-Relay#readme"
+}

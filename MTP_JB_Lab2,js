@@ -1,0 +1,80 @@
+
+var firebase = require( 'firebase/app' );
+require('firebase/database');
+
+var nodeimu = require('nodeimu');
+var IMU = new nodeimu.IMU( );
+var util = require('util');
+var sense = require('sense-hat-led');
+
+
+
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyAON0dCH575eWyzqRKgwGJfiFxyWb4o2hY",
+  authDomain: "mtp-iot-lab2.firebaseapp.com",
+  databaseURL: "https://mtp-iot-lab2.firebaseio.com",
+  projectId: "mtp-iot-lab2",
+  storageBucket: "mtp-iot-lab2.appspot.com",
+  messagingSenderId: "585306989277"
+};
+firebase.initializeApp(config);
+
+var database = firebase.database();
+
+
+//Checking for changes in update_light
+firebase.database().ref('/update_light').on('value', function(snapshot){
+	
+	//If the value changed to true, read in the data
+	if(snapshot.val() === 'true'){
+		firebase.database().ref('/LightData').once('value').then(function(snapshot){
+			
+			//Data is a string and needs to be converted to an integer
+			var column = parseInt(snapshot.val().light_x);
+			var row = parseInt(snapshot.val().light_y);
+			
+			var red = parseInt(snapshot.val().light_r);
+			var green = parseInt(snapshot.val().light_g);
+			var blue = parseInt(snapshot.val().light_b);			
+						
+			//Clear the display
+			sense.clear();
+			//Update the display
+			sense.setPixel(column, row, [red, green, blue]);
+			
+			//Posting the updated information
+			console.log('The Light Has Updated');
+			console.log('Updated Location: Row %s Column %s', row, column);
+			console.log('Updated RGB Values: Red %s Green %s Blue %s', red, green, blue);
+		});
+	}
+});
+
+
+
+function AtmosphereData() {
+	//Retrieving the data from sensors
+    var data = IMU.getValueSync();
+	
+	//Displaying the data locally
+    var displayed = util.format('Temperature: %s Humidity: %s', data.temperature.toFixed(4), data.humidity.toFixed(4));
+    console.log(displayed);
+	
+	//Writing to Firebase
+	firebase.database().ref('WrittenData').set({
+        Humidity: data.humidity,
+        Temp: data.temperature
+    });
+}
+    
+//Retrieving our temperature and humidity readings once every minute
+setInterval(AtmosphereData, 60000);
+
+
+
+
+
+
+
+
